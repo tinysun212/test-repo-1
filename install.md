@@ -3,8 +3,8 @@ Install cygwin64 packages
 -------------------------
 ```
  Devel/git                2.7.0-1
-      /cmake              3.3.2-1   -- we will use other build
-      /clang              3.7.1-1   -- we will use other build
+      /cmake              3.3.2-1
+      /clang              3.7.1-1 
       /gcc-core           5.3.0-3
       /gcc-g++            5.3.0-3
       /swig               3.0.7-1
@@ -18,37 +18,7 @@ Install cygwin64 packages
       /libncurses-devel   6.0-4.20160305
       /libiconv-devel     1.14-3
 ```
-// NOW USE clang 3.7.1-1 from Cygwin released
-Prepare Clang 3.8 version
--------------------------
-  You can download it in https://github.com/tinysun212/swift-cygwin-bin or build yourself.
-  If you build the swift binary successfully, you will also get your clang build.
 
-// NOW NO NEED TO PATCH cc, c++, clang, clang++
-Replace cc, c++, clang, clang++
--------------------------------
-```
-  cd /usr/bin
-  rm c++
-  rm cc
-  rm clang++
-  mv clang.exe clang.old.exe
-  ln -s clang-3.8.exe c++
-  ln -s clang-3.8.exe cc
-  ln -s clang-3.8.exe clang++.exe
-  ln -s clang-3.8.exe clang.exe
-  
-  cd /usr/lib/gcc/i686-pc-cygwin
-  ln -s 4.9.3  4.7.3
-
-  cd /usr/lib/gcc/i686-pc-cygwin/4.7.3/include/c++
-  ln -s x86_64-pc-cygwin i686-pc-cygwin
-
-  cd /usr/lib/clang
-  ln -s x86_64-pc-cygwin/3.5.2  3.8.0
-```
-
-// NOW USE gcc 5.3.0-3 library set
 Patch gcc header
 ----------------
   
@@ -62,7 +32,6 @@ Patch gcc header
 ->    #endif    
 ``` 
 
-// NEED CLANG header patch
 Patch clang header
 ------------------
 
@@ -76,6 +45,20 @@ Patch clang header
 ->    #define _GCC_NEXT_LIMITS_H
       /* The system's limits.h may, in turn, try to #include_next GCC's limits.h.
          Avert this #include_next madness. */
+```
+
+Patch cmake
+-----------
+
+  A patch for Cygwin-Clang is not yet applied to this version. Without this patch, the import libraries will not be generated.
+```
+   Create two files as follows (each has one line)
+ 
+     /usr/share/cmake-3.3.2/Modules/Platform/CYGWIN-Clang-C.cmake with a line
+       include(Platform/CYGWIN-GNU-C)
+ 
+     /usr/share/cmake-3.3.2/Modules/Platform/CYGWIN-Clang-CXX.cmake with a line
+       include(Platform/CYGWIN-GNU-CXX)
 ```
 
 Download sources
@@ -95,9 +78,9 @@ Download sources
   git clone https://github.com/apple/swift-corelibs-foundation.git
   git clone https://github.com/ninja-build/ninja.git
 
-  cd swift; git checkout swift-cygwin-DEVELOPMENT-SNAPSHOT-2016-02-08-a ; cd ..
-  cd llvm; git checkout swift-cygwin-DEVELOPMENT-SNAPSHOT-2016-02-08-a ; cd ..
-  cd clang; git checkout swift-cygwin-DEVELOPMENT-SNAPSHOT-2016-02-08-a ; cd ..
+  cd swift; git checkout swift-cygwin-2016-03-12 ; cd ..
+  cd llvm; git checkout swift-cygwin-2016-03-12 ; cd ..
+  cd clang; git checkout swift-cygwin-2016-03-12 ; cd ..
   cd lldb; git checkout 952b4; cd ..
   cd cmark; git checkout 6873b; cd ..
   cd llbuild; git checkout a4a79; cd ..
@@ -120,7 +103,7 @@ Currently, the build processing needs some manual works.
 ```
 1.  ninja: error: unknown target 'swift-test-stdlib-cygwin-x86_64'
 
-    /usr/bin/cmake --build /cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swift-cygwin-x86_64 -- -j3 all
+    /usr/bin/cmake --build /cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swift-cygwin-x86_64 -- all
 
 
 ----
