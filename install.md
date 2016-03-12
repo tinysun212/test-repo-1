@@ -52,7 +52,7 @@ Patch gcc header
   
   The header file 'c++config.h' must be modified. (remove a define)
 ```
-  Edit /usr/lib/gcc/x86_64-pc-cygwin/4.9.3/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 916
+  Edit /usr/lib/gcc/x86_64-pc-cygwin/5.3.0/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 916
 	Change definition of _GLIBCXX_HAVE_TLS as follows
       #define _GLIBCXX_HAVE_TLS 1
       #if defined (__clang__)
