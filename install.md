@@ -1,6 +1,6 @@
 
-Install cygwin64 packages
--------------------------
+Install cygwin64 2.4.1
+----------------------
 ```
  Devel/git                2.7.0-1
       /cmake              3.3.2-1
