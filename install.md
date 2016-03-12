@@ -25,7 +25,7 @@ Patch gcc header
   The header file 'c++config.h' must be modified.
 ```
   Edit /usr/lib/gcc/x86_64-pc-cygwin/5.3.0/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 980
-    Change definition of _GLIBCXX_HAVE_TLS as follows
+    Insert three lines which undefine _GLIBCXX_HAVE_TLS as follows
       #define _GLIBCXX_HAVE_TLS 1
 ->    #if defined (__clang__)
 ->    #undef _GLIBCXX_HAVE_TLS
