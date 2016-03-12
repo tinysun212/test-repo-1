@@ -22,7 +22,7 @@ Install cygwin64 2.4.1
 Patch gcc header
 ----------------
   
-  The header file 'c++config.h' must be modified. (remove a define)
+  The header file 'c++config.h' must be modified.
 ```
   Edit /usr/lib/gcc/x86_64-pc-cygwin/5.3.0/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 980
     Change definition of _GLIBCXX_HAVE_TLS as follows
