@@ -55,11 +55,11 @@ Patch gcc header
   The header file 'c++config.h' must be modified. (remove a define)
 ```
   Edit /usr/lib/gcc/x86_64-pc-cygwin/5.3.0/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 980
-	Change definition of _GLIBCXX_HAVE_TLS as follows
+    Change definition of _GLIBCXX_HAVE_TLS as follows
       #define _GLIBCXX_HAVE_TLS 1
-      #if defined (__clang__)
-      #undef _GLIBCXX_HAVE_TLS
-      #endif    
+->    #if defined (__clang__)
+->    #undef _GLIBCXX_HAVE_TLS
+->    #endif    
 ``` 
 
 // NEED CLANG header patch
@@ -69,13 +69,13 @@ Patch clang header
   The header file 'limits.h' must be modified.
 ```
   Edit /usr/lib/clang/3.7.1/include/limits.h Line 28
-        Insert a line which defines _GCC_NEXT_LIMITS_H as follows
-    #ifndef __CLANG_LIMITS_H
-    #define __CLANG_LIMITS_H
+    Insert a line which defines _GCC_NEXT_LIMITS_H as follows
+      #ifndef __CLANG_LIMITS_H
+      #define __CLANG_LIMITS_H
 
-->  #define _GCC_NEXT_LIMITS_H
-    /* The system's limits.h may, in turn, try to #include_next GCC's limits.h.
-       Avert this #include_next madness. */
+->    #define _GCC_NEXT_LIMITS_H
+      /* The system's limits.h may, in turn, try to #include_next GCC's limits.h.
+         Avert this #include_next madness. */
 ```
 
 Download sources
