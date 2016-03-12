@@ -18,12 +18,13 @@ Install cygwin64 packages
       /libncurses-devel   6.0-4.20160305
       /libiconv-devel     1.14-3
 ```
-
+// NOW USE clang 3.7.1-1 from Cygwin released
 Prepare Clang 3.8 version
 -------------------------
   You can download it in https://github.com/tinysun212/swift-cygwin-bin or build yourself.
   If you build the swift binary successfully, you will also get your clang build.
 
+// NOW NO NEED TO PATCH cc, c++, clang, clang++
 Replace cc, c++, clang, clang++
 -------------------------------
 ```
@@ -46,19 +47,36 @@ Replace cc, c++, clang, clang++
   cd /usr/lib/clang
   ln -s x86_64-pc-cygwin/3.5.2  3.8.0
 ```
-  
+
+// NOW USE gcc 5.3.0-3 library set
 Patch gcc header
 ----------------
   
   The header file 'c++config.h' must be modified. (remove a define)
 ```
-  Edit /usr/lib/gcc/x86_64-pc-cygwin/5.3.0/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 916
+  Edit /usr/lib/gcc/x86_64-pc-cygwin/5.3.0/include/c++/x86_64-pc-cygwin/bits/c++config.h Line 980
 	Change definition of _GLIBCXX_HAVE_TLS as follows
       #define _GLIBCXX_HAVE_TLS 1
       #if defined (__clang__)
       #undef _GLIBCXX_HAVE_TLS
       #endif    
 ``` 
+
+// NEED CLANG header patch
+Patch clang header
+------------------
+
+  The header file 'limits.h' must be modified.
+```
+  Edit /usr/lib/clang/3.7.1/include/limits.h Line 28
+        Insert a line which defines _GCC_NEXT_LIMITS_H as follows
+    #ifndef __CLANG_LIMITS_H
+    #define __CLANG_LIMITS_H
+
+->  #define _GCC_NEXT_LIMITS_H
+    /* The system's limits.h may, in turn, try to #include_next GCC's limits.h.
+       Avert this #include_next madness. */
+```
 
 Download sources
 ----------------
