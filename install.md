@@ -104,5 +104,5 @@ Currently, the build processing needs some manual works.
 ```
 1.  ninja: error: unknown target 'swift-test-stdlib-cygwin-x86_64'
 
-    /usr/bin/cmake --build /cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swift-cygwin-x86_64 -- all
+    /usr/bin/cmake --build $WORK_DIR/build/Ninja-ReleaseAssert/swift-cygwin-x86_64 -- all
 ```	
