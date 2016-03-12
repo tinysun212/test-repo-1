@@ -50,7 +50,8 @@ Patch clang header
 Patch cmake
 -----------
 
-  A patch for Cygwin-Clang is not yet applied to this version. Without this patch, the import libraries will not be generated.
+  Without this patch, the import libraries will not be generated.
+  (This patch is already applied to the CMake nightly build, but not yet to this 3.3.2.)
 ```
    Create two files as follows (each has one line)
  
@@ -104,36 +105,4 @@ Currently, the build processing needs some manual works.
 1.  ninja: error: unknown target 'swift-test-stdlib-cygwin-x86_64'
 
     /usr/bin/cmake --build /cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swift-cygwin-x86_64 -- all
-
-
-----
-2.  clang-3.8: error: no such file or directory: 'lib/libclang.dll.a'
-
-    cd $WORK_DIR/build/*eAssert/llvm*
-    cp -p bin/cygclang.dll lib/libclang.dll.a   
-
-    cd $WORK_DIR/swift
-    utils/build-script -R
-
-3. ninja: error: unknown target 'swift-stdlib-cygwin-x86_64'
-
-    /usr/bin/cmake --build $WORK_DIR/build/*eAssert/swift-cygwin-x86_64 -- -j3 all
-    
-4.  Linking CXX executable bin/swift.exe
-
-    cd $WORK_DIR/build/*eAssert/cmark*/src
-    cp -p cygcmark-0.22.0.dll libcmark.a
-    cd $WORK_DIR/build/*eAssert/swift*/bin
-    cp -p ../../cmar*/src/cygcmark-0.22.0.dll .
-
-    cd $WORK_DIR/build/*eAssert/swift*
-    ../ninja*/ninja
-
-5.  clang: error: no such file or directory: 'lib/swift/windows/x86_64/libswiftCore.dll.a'
-
-    cd $WORK_DIR/build/*eAssert/swift*/lib/swift/windows/x86_64
-    ln -s ../cygswiftCore.dll libswiftCore.dll.a 
-
-    cd $WORK_DIR/build/*eAssert/swift*
-    ../ninja*/ninja
 ```	
