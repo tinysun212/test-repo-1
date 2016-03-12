@@ -71,23 +71,13 @@ Download sources
   git clone https://github.com/tinysun212/swift-cygwin.git swift
   git clone https://github.com/tinysun212/swift-llvm-cygwin.git llvm
   git clone https://github.com/tinysun212/swift-clang-cygwin.git clang
-  git clone https://github.com/apple/swift-lldb.git lldb
   git clone https://github.com/apple/swift-cmark.git cmark
-  git clone https://github.com/apple/swift-llbuild.git llbuild
-  git clone https://github.com/apple/swift-package-manager.git swiftpm
-  git clone https://github.com/apple/swift-corelibs-xctest.git
-  git clone https://github.com/apple/swift-corelibs-foundation.git
   git clone https://github.com/ninja-build/ninja.git
 
   cd swift; git checkout swift-cygwin-2016-03-12 ; cd ..
   cd llvm; git checkout swift-cygwin-2016-03-12 ; cd ..
   cd clang; git checkout swift-cygwin-2016-03-12 ; cd ..
-  cd lldb; git checkout 952b4; cd ..
   cd cmark; git checkout 6873b; cd ..
-  cd llbuild; git checkout a4a79; cd ..
-  cd swiftpm; git checkout 3780a; cd ..
-  cd swift-corelibs-xctest; git checkout 2f785; cd ..
-  cd swift-corelibs-foundation; git checkout 720a9; cd ..
   cd ninja; git checkout 2eb1cc9; cd ..
 ```
   
