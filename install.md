@@ -55,10 +55,10 @@ Patch cmake
 ```
    Create two files as follows (each has one line)
  
-     /usr/share/cmake-3.3.2/Modules/Platform/CYGWIN-Clang-C.cmake with a line
+     /usr/share/cmake-3.3.2/Modules/Platform/CYGWIN-Clang-C.cmake
        include(Platform/CYGWIN-GNU-C)
  
-     /usr/share/cmake-3.3.2/Modules/Platform/CYGWIN-Clang-CXX.cmake with a line
+     /usr/share/cmake-3.3.2/Modules/Platform/CYGWIN-Clang-CXX.cmake
        include(Platform/CYGWIN-GNU-CXX)
 ```
 
