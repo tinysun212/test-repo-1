@@ -174,7 +174,7 @@ Run
   ninja bin\swift.exe
   ninja lib\swift\windows\x86_64\libswiftRuntime.a  
   ninja lib\swift\windows\x86_64\libswiftStdlibStubs.a
-  ninja stdlib\public\core\windows\x86_64\Swift.obj  --> We will not use this due to unknown bug.
+  ninja stdlib\public\core\windows\x86_64\Swift.obj
   ninja stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj
 ```
 
@@ -182,7 +182,8 @@ Compile Swift.obj
 -----------------
 ```
 **********************************************************************************
-*** CAUTION: You should use swiftc.exe built on Cygwin (or other good swiftc) with working files in %WORKDIR%/swift.
+*** CAUTION: Due to a bug, you should use swiftc.exe built on Cygwin 
+***          (or other good swiftc) with working files in %WORKDIR%/swift.
 **********************************************************************************
 
 (In Cygwin64 Terminal)
