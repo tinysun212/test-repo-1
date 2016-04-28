@@ -199,9 +199,12 @@ Build swiftCore (shared)
 **********************************************************************************
 *** CAUTION: To build Swift.obj, should use swiftc.exe built on Cygwin
 **********************************************************************************
+Run "VS2015 x64 Native Tool Command Prompt"
 
 cd %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/core
 
+(In Cygwin64 Terminal)
+// change to the directory %WORKDIR%\build\NinjaMSVC\swift
 dlltool -z allexp.orig.def --export-all-symbols ./windows/x86_64/Swift.obj ../../../lib/swift/windows/x86_64/libswiftRuntime.a  ../../../lib/swift/windows/x86_64/libswiftStdlibStubs.a
 
 python %WORKDIR%/swift/misc/trim_exp.py allexp.orig.def allexp.def
