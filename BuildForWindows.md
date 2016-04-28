@@ -139,7 +139,7 @@ cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\llvm
 Build Swift
 -----------
 ```
-Run "VS2015 x64 Native Tool Command Prompt"
+Keep in "VS2015 x64 Native Tool Command Prompt"
 // You will use cmake, python, ninja, llvm tools here.
 
 set PATH=%WORKDIR%\build\NinjaMSVC\llvm\release\bin;%PATH%
@@ -156,7 +156,7 @@ cd %WORKDIR%\build\NinjaMSVC\swift
 cmake -G Ninja ..\..\..\swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang  -DCMAKE_CXX_COMPILER=clang -DLIBXML2_LIBRARIES=%WORKDIR%\libxml2\lib\libxml2.a  -DLIBXML2_INCLUDE_DIR=%WORKDIR%\libxml2\include\libxml2  -DPKG_CONFIG_EXECUTABLE=c:\pkg-config\bin\pkg-config.exe -DUUID_INCLUDE_DIR=%WORKDIR%\uuid\include -DUUID_LIBRARY=%WORKDIR%\uuid\lib\uuid.lib -DICU_UC_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_UC_LIBRARIES=%WORKDIR%\icu\lib64\icuuc.lib -DICU_I18N_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_I18N_LIBRARIES=%WORKDIR%\icu\lib64\icuin.lib -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORKDIR%\build\NinjaMSVC\cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORKDIR%\cmark  -DCMAKE_CXX_FLAGS="-fms-extensions -fms-compatibility-version=19 -frtti " ..\..\..\swift
 
 (In Cygwin64 Terminal)
-// change to the directory %WORKDIR%\build\NinjaMSVC\swift
+// change to the same directory
 sed	-e 's;libclang\([^.]*\).a;clang\1.lib;g' \
 	-e 's;swift\\libcmark.a;build\\NinjaMSVC\\cmark\\src\\Release\\cmark.lib;g' \
 	-e 's;swift swiftc;swift.exe swiftc.exe;' \
@@ -175,7 +175,6 @@ Run
   ninja lib\swift\windows\x86_64\libswiftRuntime.a  
   ninja lib\swift\windows\x86_64\libswiftStdlibStubs.a
   ninja stdlib\public\core\windows\x86_64\Swift.obj
-  ninja stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj
 ```
 
 Compile Swift.obj
@@ -199,12 +198,11 @@ Build swiftCore (shared)
 **********************************************************************************
 *** CAUTION: To build Swift.obj, should use swiftc.exe built on Cygwin
 **********************************************************************************
-Run "VS2015 x64 Native Tool Command Prompt"
-
+Keep in "VS2015 x64 Native Tool Command Prompt"
 cd %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/core
 
 (In Cygwin64 Terminal)
-// change to the directory %WORKDIR%\build\NinjaMSVC\swift
+// change to the same directory
 dlltool -z allexp.orig.def --export-all-symbols ./windows/x86_64/Swift.obj ../../../lib/swift/windows/x86_64/libswiftRuntime.a  ../../../lib/swift/windows/x86_64/libswiftStdlibStubs.a
 
 python %WORKDIR%/swift/misc/trim_exp.py allexp.orig.def allexp.def
@@ -220,8 +218,7 @@ Build swiftSwiftOnoneSupport (shared)
 *** CAUTION: To build SwiftOnoneSupport.obj, should use swiftc.exe built on MSVC
 ***          To use with static link, rename .pdata to .qdata with hexa editor
 **********************************************************************************
-Run "VS2015 x64 Native Tool Command Prompt"
-
+Keep in "VS2015 x64 Native Tool Command Prompt"
 cd %WORKDIR%/build/NinjaMSVC/swift/bin
 
 swiftc -emit-ir -sdk / -target x86_64-pc-windows-msvc -O -I %WORKDIR%/build/NinjaMSVC/swift/lib/swift/windows/x86_64 -module-cache-path %WORKDIR%/build/NinjaMSVC/swift/clang-module-cache -no-link-objc-runtime -Xfrontend -sil-serialize-all -parse-stdlib -module-link-name swiftSwiftOnoneSupport -force-single-frontend-invocation -parse-as-library -emit-module -emit-module-path %WORKDIR%/build/NinjaMSVC/swift/lib/swift/windows/x86_64/SwiftOnoneSupport.swiftmodule -o SwiftOnoneSupport.ll %WORKDIR%/swift/stdlib/public/SwiftOnoneSupport/SwiftOnoneSupport.swift
@@ -232,11 +229,12 @@ clang -c SwiftOnoneSupport.new.ll -o %WORKDIR%\build\NinjaMSVC\swift\stdlib\publ
 
 cd %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/SwiftOnoneSupport
 
+(In Cygwin64 Terminal)
+// change to the same directory
 dlltool -z allexp.orig.def --export-all-symbols ../../../stdlib/public/SwiftOnoneSupport/windows/x86_64/SwiftOnoneSupport.obj
 
 python %WORKDIR%/swift/misc/trim_exp.py allexp.orig.def allexp.def
 
-(In VS2015 x64 Native Tool Command Prompt)
 link /ERRORREPORT:PROMPT /OUT:"%WORKDIR%\build\NinjaMSVC\swift\lib\swift\windows\libswiftSwiftOnoneSupport.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:%WORKDIR%/build/NinjaMSVC/llvm/Release/lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\..\..\lib\swift\windows\libswiftCore.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"%WORKDIR%/build/NinjaMSVC/swift/bin/libswiftSwiftOnoneSupport.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"%WORKDIR%/build/NinjaMSVC/swift/lib/swift/windows/libswiftSwiftOnoneSupport.lib" /MACHINE:X64 /DLL %WORKDIR%\build\NinjaMSVC\swift\stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj    /DEF:allexp.def msvcrt.lib /MERGE:.rdata=.rodata
 
 ```
@@ -244,6 +242,7 @@ link /ERRORREPORT:PROMPT /OUT:"%WORKDIR%\build\NinjaMSVC\swift\lib\swift\windows
 Run with Interpreter
 --------------------
 ```
+Keep in "VS2015 x64 Native Tool Command Prompt"
 Make simple source Hello.swift containing one line.
   print("Hello")
 
@@ -254,6 +253,7 @@ Run
 Compile & Run with DLL
 ----------------------
 ```
+Keep in "VS2015 x64 Native Tool Command Prompt"
 cd %WORKDIR%/build/NinjaMSVC/swift/bin
 
 Run
@@ -275,6 +275,7 @@ Run
 Build Static libraries
 ----------------------
 ```
+Keep in "VS2015 x64 Native Tool Command Prompt"
 cd %WORKDIR%/build/NinjaMSVC/swift/bin
 
 lib /out:libswiftCore.lib  ..\lib\swift\windows\x86_64\libswiftRuntime.a  ..\lib\swift\windows\x86_64\libswiftStdlibStubs.a %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/core/windows/x86_64/Swift.obj %WORKDIR%\icu\lib64\icuuc.lib %WORKDIR%\icu\lib64\icuin.lib /IGNORE:4006,4221
@@ -288,6 +289,7 @@ rename ".pdata" to ".qdata" (twice occurrence)
 Link with Static library
 ------------------------
 ```
+Keep in "VS2015 x64 Native Tool Command Prompt"
 cd %WORKDIR%/build/NinjaMSVC/swift/bin
 
 Run
