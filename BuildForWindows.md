@@ -171,7 +171,11 @@ sed	-e 's;libclang\([^.]*\).a;clang\1.lib;g' \
 
 Run
   cd %WORKDIR%\build\NinjaMSVC\swift
-  ninja
+  ninja bin\swift.exe
+  ninja lib\swift\windows\x86_64\libswiftRuntime.a  
+  ninja lib\swift\windows\x86_64\libswiftStdlibStubs.a
+  ninja stdlib/public/core/windows/x86_64/Swift.obj
+  ninja stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj
 ```
 
 Compile Swift.obj
