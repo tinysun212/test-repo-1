@@ -236,6 +236,13 @@ link /ERRORREPORT:PROMPT /OUT:"%WORKDIR%\build\NinjaMSVC\swift\lib\swift\windows
 
 Run with Interpreter
 --------------------
+```
+Make simple source Hello.swift containing one line.
+  print("Hello")
+
+Run
+  swift Hello.swift
+```
 
 Compile & Run with DLL
 ----------------------
