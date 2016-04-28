@@ -231,8 +231,29 @@ Run with Interpreter
 Compile & Run with DLL
 ----------------------
 
-Build Static library
---------------------
+Build Static libraries
+----------------------
+```
+cd %WORKDIR%/build/NinjaMSVC/swift/bin
+
+lib /out:libswiftCore.lib  ..\lib\swift\windows\x86_64\libswiftRuntime.a  ..\lib\swift\windows\x86_64\libswiftStdlibStubs.a %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/core/windows/x86_64/Swift.obj %WORKDIR%\icu\lib64\icuuc.lib %WORKDIR%\icu\lib64\icuin.lib /IGNORE:4006,4221
+
+lib /out:libswiftSwiftOnoneSupport.lib %WORKDIR%\build\NinjaMSVC\swift\stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj
+
+Edit libswiftSwiftOnoneSupport.lib with hexa editor
+rename ".pdata" to ".qdata" (twice occurrence)
+```
 
 Link with Static library
 ------------------------
+```
+Run
+   swiftc -c Hello.swift -o Hello_static.obj
+OR swiftc -c Hello.swift -o Hello_static.obj -O
+OR swiftc -c Hello.swift -o Hello_static.obj -Onone
+
+link /out:hello_static.exe hello_static.obj libswiftCore.lib libswiftSwiftOnoneSupport.lib msvcrt.lib /MERGE:.rdata=.rodata /FORCE:MULTIPLE /IGNORE:4006,4049,4217
+
+(Another way to link)
+	clang -o hello_static.exe Hello_static.obj -llibswiftCore -llibswiftSwiftOnoneSupport -Wl,/LIBPATH:"C:/Program Files/Swift/lib/swift_static/windows",/MERGE:.rdata=.rodata,/FORCE:MULTIPLE,/NODEFAULTLIB:libcmt,msvcrt.lib -Xlinker /IGNORE:4006,4049,4217
+```
