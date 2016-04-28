@@ -301,4 +301,8 @@ link /out:hello_static.exe hello_static.obj libswiftCore.lib libswiftSwiftOnoneS
 
 (Another way to link)
 	clang -o hello_static.exe Hello_static.obj -llibswiftCore -llibswiftSwiftOnoneSupport -Wl,/LIBPATH:"C:/Program Files/Swift/lib/swift_static/windows",/MERGE:.rdata=.rodata,/FORCE:MULTIPLE,/NODEFAULTLIB:libcmt,msvcrt.lib -Xlinker /IGNORE:4006,4049,4217
+	
+Run
+	Hello_static.exe
 ```
+
