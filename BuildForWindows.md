@@ -114,6 +114,7 @@ Build cmark
 -----------
 ```
 Run "VS2015 x64 Native Tool Command Prompt"
+
 mkdir %WORKDIR%\build\NinjaMSVC\cmark
 cd %WORKDIR%\build\NinjaMSVC\cmark
 cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\cmark
@@ -123,6 +124,8 @@ cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\cmar
 Build clang
 -----------
 ```
+Run "VS2015 x64 Native Tool Command Prompt"
+
 cd %WORKDIR%\llvm\tools
 mklink /d clang ..\..\clang
 
@@ -135,6 +138,9 @@ cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\llvm
 Build Swift
 -----------
 ```
+Run "VS2015 x64 Native Tool Command Prompt"
+// You will use cmake, python, ninja, llvm tools here.
+
 set PATH=%WORKDIR%\build\NinjaMSVC\llvm\release\bin;%PATH%
 
 mkdir %WORKDIR%\build\NinjaMSVC\swift
