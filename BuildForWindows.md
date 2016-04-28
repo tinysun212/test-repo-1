@@ -9,7 +9,7 @@ set WORKDIR=c:\swiftbuild
 Install Packages
 ----------------------
 ```
-
+Install Visual Studio Community 2015 Update 2
 
 Install cmake-3.5.2
   1) Download from https://cmake.org/download/
@@ -110,13 +110,58 @@ Download sources
   cd ninja; git checkout 2eb1cc9; cd ..
 ```
 
-Build
------
+Build cmark
+-----------
 ```
-  cd $WORK_DIR/swift
-  utils/build-script -R
+Run "VS2015 x64 Native Tool Command Prompt"
+mkdir %WORKDIR%\build\NinjaMSVC\cmark
+cd %WORKDIR%\build\NinjaMSVC\cmark
+cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\cmark
+"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" /p:Configuration=Release ALL_BUILD.vcxproj 
 ```
-  
-Build Troubleshoot
-------------------
-  TBD
+
+Build clang
+-----------
+```
+cd %WORKDIR%\llvm\tools
+mklink /d clang ..\..\clang
+
+mkdir %WORKDIR%\build\NinjaMSVC\llvm
+cd %WORKDIR%\build\NinjaMSVC\llvm
+cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\llvm
+"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" /p:Configuration=Release ALL_BUILD.vcxproj 
+```
+
+Build Swift
+-----------
+```
+set PATH=%WORKDIR%\build\NinjaMSVC\llvm\release\bin;%PATH%
+
+mkdir %WORKDIR%\build\NinjaMSVC\swift
+cd %WORKDIR%\build\NinjaMSVC\swift
+
+Following DLL's must be copied to %WORKDIR%/build/NinjaMSVC/swift/bin
+  cmark.dll
+  icudt56.dll
+  icuin56.dll
+  icuuc56.dll
+
+cmake -G Ninja ..\..\..\swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang  -DCMAKE_CXX_COMPILER=clang -DLIBXML2_LIBRARIES=%WORKDIR%\libxml2\lib\libxml2.a  -DLIBXML2_INCLUDE_DIR=%WORKDIR%\libxml2\include\libxml2  -DPKG_CONFIG_EXECUTABLE=c:\pkg-config\bin\pkg-config.exe -DUUID_INCLUDE_DIR=%WORKDIR%\uuid\include -DUUID_LIBRARY=%WORKDIR%\uuid\lib\uuid.lib -DICU_UC_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_UC_LIBRARIES=%WORKDIR%\icu\lib64\icuuc.lib -DICU_I18N_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_I18N_LIBRARIES=%WORKDIR%\icu\lib64\icuin.lib -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORKDIR%\build\NinjaMSVC\cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORKDIR%\cmark  -DCMAKE_CXX_FLAGS="-fms-extensions -fms-compatibility-version=19 -frtti " ..\..\..\swift
+
+(In Cygwin64 Terminal)
+sed	-e 's;libclang\([^.]*\).a;clang\1.lib;g' \
+	-e 's;swift\\libcmark.a;build\\NinjaMSVC\\cmark\\src\\Release\\cmark.lib;g' \
+	-e 's;swift swiftc;swift.exe swiftc.exe;' \
+	-e 's;swift swift-autolink-extract;swift.exe swift-autolink-extract.exe;' \
+	-e 's;-fno-rtti ;;' \
+	-e 's;DEFINES = -DGTEST_HAS_RTTI;DEFINES = -D_MT -D_DLL -DGTEST_HAS_RTTI;' \
+	-e 's;-Wl,--allow-multiple-definition;-Wl,/FORCE:MULTIPLE;' \
+    -e 's;LINK_FLAGS = -target;LINK_FLAGS = -Wl,msvcrt.lib -target;' \
+	-e 's;LINK_PATH = -LC:;LINK_PATH = -Wl,/LIBPATH:C$:;' \
+    -e 's;-ledit ;;g' \
+	build.ninja > tt; mv tt build.ninja
+
+Run
+  cd %WORKDIR%\build\NinjaMSVC\swift
+  ninja
+```
