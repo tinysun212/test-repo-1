@@ -144,14 +144,14 @@ Run "VS2015 x64 Native Tool Command Prompt"
 
 set PATH=%WORKDIR%\build\NinjaMSVC\llvm\release\bin;%PATH%
 
-mkdir %WORKDIR%\build\NinjaMSVC\swift
-cd %WORKDIR%\build\NinjaMSVC\swift
-
+mkdir %WORKDIR%\build\NinjaMSVC\swift\bin
 Following DLL's must be copied to %WORKDIR%/build/NinjaMSVC/swift/bin
   cmark.dll
   icudt56.dll
   icuin56.dll
   icuuc56.dll
+
+cd %WORKDIR%\build\NinjaMSVC\swift
 
 cmake -G Ninja ..\..\..\swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang  -DCMAKE_CXX_COMPILER=clang -DLIBXML2_LIBRARIES=%WORKDIR%\libxml2\lib\libxml2.a  -DLIBXML2_INCLUDE_DIR=%WORKDIR%\libxml2\include\libxml2  -DPKG_CONFIG_EXECUTABLE=c:\pkg-config\bin\pkg-config.exe -DUUID_INCLUDE_DIR=%WORKDIR%\uuid\include -DUUID_LIBRARY=%WORKDIR%\uuid\lib\uuid.lib -DICU_UC_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_UC_LIBRARIES=%WORKDIR%\icu\lib64\icuuc.lib -DICU_I18N_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_I18N_LIBRARIES=%WORKDIR%\icu\lib64\icuin.lib -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORKDIR%\build\NinjaMSVC\cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORKDIR%\cmark  -DCMAKE_CXX_FLAGS="-fms-extensions -fms-compatibility-version=19 -frtti " ..\..\..\swift
 
