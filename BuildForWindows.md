@@ -82,8 +82,9 @@ Install utils.zip (Python invoker)
 	 %WORKDIR%\swift\utils\gyb.c
      (source is included - /misc/gyb.cpp)
 
-Prepare Cygwin Tool
-  - You need dlltool.exe in Cygwin.
+Prepare Cygwin Tool and Swift Cygwin port.
+  - You will need bash in Cygwin to run sed.
+  - You will need dlltool.exe in Cygwin.
   - You need swift.exe built under Cygwin.
      swift.exe for MSVC will be built, but we should use Cygwin version to build the standard library.
 	 
@@ -124,7 +125,7 @@ cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\cmar
 Build clang
 -----------
 ```
-Run "VS2015 x64 Native Tool Command Prompt"
+Run "VS2015 x64 Native Tool Command Prompt" in ADMINISTRATOR mode (to run mklink.exe)
 
 cd %WORKDIR%\llvm\tools
 mklink /d clang ..\..\clang
@@ -171,3 +172,62 @@ Run
   cd %WORKDIR%\build\NinjaMSVC\swift
   ninja
 ```
+
+Compile Swift.obj
+-----------------
+
+
+Build swiftCore (shared)
+------------------------
+```
+**********************************************************************************
+*** CAUTION: To build Swift.obj, should use swiftc.exe built on Cygwin
+**********************************************************************************
+
+cd %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/core
+
+dlltool -z allexp.orig.def --export-all-symbols ./windows/x86_64/Swift.obj ../../../lib/swift/windows/x86_64/libswiftRuntime.a  ../../../lib/swift/windows/x86_64/libswiftStdlibStubs.a
+
+python %WORKDIR%/swift/misc/trim_exp.py allexp.orig.def allexp.def
+
+(In VS2015 x64 Native Tool Command Prompt)
+link /ERRORREPORT:PROMPT /OUT:"%WORKDIR%\build\NinjaMSVC\swift\lib\swift\windows\libswiftCore.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:%WORKDIR%/build/NinjaMSVC/llvm/Release/lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\..\..\lib\swift\windows\x86_64\libswiftRuntime.a ..\..\..\lib\swift\windows\x86_64\libswiftStdlibStubs.a %WORKDIR%\icu\lib64\icuuc.lib %WORKDIR%\icu\lib64\icuin.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"%WORKDIR%/build/NinjaMSVC/swift/bin/swiftCore.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"%WORKDIR%\build\NinjaMSVC\swift\lib\swift\windows\libswiftCore.lib" /MACHINE:X64 /DLL %WORKDIR%\build\NinjaMSVC\swift\stdlib\public\core\windows\x86_64\Swift.obj /DEF:allexp.def /MERGE:.rdata=.rodata /IGNORE:4102,4197 msvcrt.lib
+```
+
+Build swiftSwiftOnoneSupport (shared)
+-------------------------------------
+```
+**********************************************************************************
+*** CAUTION: To build SwiftOnoneSupport.obj, should use swiftc.exe built on MSVC
+***          To use with static link, rename .pdata to .qdata with hexa editor
+**********************************************************************************
+
+cd %WORKDIR%/build/NinjaMSVC/swift/bin
+
+swiftc -emit-ir -sdk / -target x86_64-pc-windows-msvc -O -I %WORKDIR%/build/NinjaMSVC/swift/lib/swift/windows/x86_64 -module-cache-path %WORKDIR%/build/NinjaMSVC/swift/clang-module-cache -no-link-objc-runtime -Xfrontend -sil-serialize-all -parse-stdlib -module-link-name swiftSwiftOnoneSupport -force-single-frontend-invocation -parse-as-library -emit-module -emit-module-path %WORKDIR%/build/NinjaMSVC/swift/lib/swift/windows/x86_64/SwiftOnoneSupport.swiftmodule -o SwiftOnoneSupport.ll %WORKDIR%/swift/stdlib/public/SwiftOnoneSupport/SwiftOnoneSupport.swift
+
+python %WORKDIR%/swift/misc/inject_dllimport.py SwiftOnoneSupport.ll SwiftOnoneSupport.new.ll
+
+clang -c SwiftOnoneSupport.new.ll -o %WORKDIR%\build\NinjaMSVC\swift\stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj -mcmodel=large -target x86_64-pc-windows-msvc19.0.0
+
+cd %WORKDIR%/build/NinjaMSVC/swift/stdlib/public/SwiftOnoneSupport
+
+dlltool -z allexp.orig.def --export-all-symbols ../../../stdlib/public/SwiftOnoneSupport/windows/x86_64/SwiftOnoneSupport.obj
+
+python %WORKDIR%/swift/misc/trim_exp.py allexp.orig.def allexp.def
+
+(In VS2015 x64 Native Tool Command Prompt)
+link /ERRORREPORT:PROMPT /OUT:"%WORKDIR%\build\NinjaMSVC\swift\lib\swift\windows\libswiftSwiftOnoneSupport.dll" /INCREMENTAL:NO /NOLOGO /LIBPATH:%WORKDIR%/build/NinjaMSVC/llvm/Release/lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\..\..\lib\swift\windows\libswiftCore.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"%WORKDIR%/build/NinjaMSVC/swift/bin/libswiftSwiftOnoneSupport.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"%WORKDIR%/build/NinjaMSVC/swift/lib/swift/windows/libswiftSwiftOnoneSupport.lib" /MACHINE:X64 /DLL %WORKDIR%\build\NinjaMSVC\swift\stdlib\public\SwiftOnoneSupport\windows\x86_64\SwiftOnoneSupport.obj    /DEF:allexp.def msvcrt.lib /MERGE:.rdata=.rodata
+```
+
+Run with Interpreter
+--------------------
+
+Compile & Run with DLL
+----------------------
+
+Build Static library
+--------------------
+
+Link with Static library
+------------------------
