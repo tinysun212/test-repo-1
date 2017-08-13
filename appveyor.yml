@@ -12,20 +12,19 @@ install:
   - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
-  - echo %PATH%
   - SET WORKDIR=C:\projects
-  - pacman -S mingw-w64-x86_64-cmake
-  - pacman -S mingw-w64-x86_64-ninja
-  - pacman -S mingw-w64-x86_64-clang       
-  - pacman -S mingw-w64-x86_64-icu         
-  - pacman -S mingw-w64-x86_64-libxml2     
-  - pacman -S mingw-w64-x86_64-wineditline 
-  - pacman -S mingw-w64-x86_64-winpthreads 
-  - pacman -S mingw-w64-x86_64-pkg-config  
-  - pacman -S mingw-w64-x86_64-dlfcn       
-  - pacman -S make                         
-  - pacman -S python                       
-  - pacman -S python2                      
+  - pacman -Sy mingw-w64-x86_64-cmake
+  - pacman -Sy mingw-w64-x86_64-ninja
+  - pacman -Sy mingw-w64-x86_64-clang       
+  - pacman -Sy mingw-w64-x86_64-icu         
+  - pacman -Sy mingw-w64-x86_64-libxml2     
+  - pacman -Sy mingw-w64-x86_64-wineditline 
+  - pacman -Sy mingw-w64-x86_64-winpthreads 
+  - pacman -Sy mingw-w64-x86_64-pkg-config  
+  - pacman -Sy mingw-w64-x86_64-dlfcn       
+  - pacman -Sy make                         
+  - pacman -Sy python                       
+  - pacman -Sy python2                      
 
 build_script:
   - cd
