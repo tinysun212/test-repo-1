@@ -9,15 +9,16 @@ install:
   # running under CI
   - set CI_TESTING=1
   - 'echo End intall at: & time /t'
+  - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - echo %PATH%
+
+build_script:
   - cd
   - cd Src
   - gcc -o hello.exe hello.c
 
-build_script:
-  - 'echo Nothing to build'
-
 test_script:
   - 'echo test_script'
+  - hello
