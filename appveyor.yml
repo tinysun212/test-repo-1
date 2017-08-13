@@ -1,22 +1,17 @@
 version: 1.0.{build}
 
-  environment:
-    matrix:
-    - COMPILER: msys2
-      PLATFORM: x64
-      MSYS2_ARCH: x86_64
-      MSYS2_DIR: msys64
-      MSYSTEM: MINGW64
-      BIT: 64
+environment:
+  matrix:
+  - COMPILER: gcc
+    PLATFORM: mingw64
 
-  install:
-    # running under CI
-    - set CI_TESTING=1
-    - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\install.bat'
-    - 'echo End intall at: & time /t'
+install:
+  # running under CI
+  - set CI_TESTING=1
+  - 'echo End intall at: & time /t'
 
-  build_script:
-    - 'echo Nothing to build'
+build_script:
+  - 'echo Nothing to build'
 
-  test_script:
-    - '%APPVEYOR_BUILD_FOLDER%\dev\ci\appveyor\test.bat'
+test_script:
+  - 'echo test_script'
