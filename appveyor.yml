@@ -13,6 +13,8 @@ install:
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - SET WORKDIR=C:\projects
+  - git clone -q --branch=master https://github.com/tinysun212/swift-clang-cygwin.git swift-clang
+  - cd swift-clang; git checkout -qf swift-4.0.3+mingw.20180102
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
   - pacman -S --noconfirm mingw-w64-x86_64-clang       
