@@ -7,13 +7,12 @@ environment:
 
 install:
   # Set Environment
-  # running under CI
-  - set CI_TESTING=1
   - 'echo End intall at: & time /t'
   - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - SET WORK_DIR=C:\projects
+  - cd %WORK_DIR%
   
   # Install packages
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
@@ -31,11 +30,11 @@ install:
   
   # Download source
   - git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
-  - cd %WORK_DIR%/cmark & git checkout -qf master
-  - git clone https://github.com/tinysun212/swift-llvm-cygwin.git llvm
-  - cd %WORK_DIR%/llvm & git checkout -qf swift-4.0.3+mingw.20180102
-  - git clone https://github.com/tinysun212/swift-clang-cygwin.git clang
-  - cd %WORK_DIR%/clang & git checkout -qf swift-4.0.3+mingw.20180102
+  - cd %WORK_DIR%/cmark & git checkout -qf master & cd ..
+  - git clone https://github.com/tinysun212/swift-llvm-cygwin.git %WORK_DIR%/llvm
+  - cd %WORK_DIR%/llvm & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+  - git clone https://github.com/tinysun212/swift-clang-cygwin.git %WORK_DIR%/clang
+  - cd %WORK_DIR%/clang & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
   
   # instead of git clone swift
   - c:/msys64/usr/bin/mkdir %WORK_DIR%/swift
@@ -59,4 +58,4 @@ build_script:
   
 test_script:
   - 'echo test_script'
-  - hello
+  #- hello
