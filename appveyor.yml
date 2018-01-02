@@ -12,9 +12,11 @@ install:
   - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
-  - SET WORKDIR=C:\projects
-  - git clone -q --branch=master https://github.com/tinysun212/test-repo-1.git sub-test-repo
-  - cd sub-test-repo & git checkout -qf 318c395eb75002bfd32b5c0c3df94da53474782e
+  - SET WORK_DIR=C:\projects
+  - git clone https://github.com/apple/swift-cmark.git cmark
+  - cd cmark & git checkout -qf master
+  # instead of git clone swift
+  - c:/msys64/usr/bin/mkdir $WORK_DIR/swift
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
   - pacman -S --noconfirm mingw-w64-x86_64-clang       
@@ -29,10 +31,16 @@ install:
   - pacman -S --noconfirm python2                      
 
 build_script:
-  - cd
-  - cd Src
-  - gcc -o hello.exe hello.c
-
+  # Build cmark
+  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/cmark
+  - cd %WORK_DIR%/build/NinjaMinGW/cmark
+  - cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ../../../cmark
+  - ninja
+  - cd src
+  - cp -p libcmark.dll.a libcmark.a
+  - cp -p libcmark.a  $WORK_DIR/swift/libcmark.a
+  # Build clang
+  
 test_script:
   - 'echo test_script'
   - hello
