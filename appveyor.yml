@@ -16,7 +16,7 @@ install:
   - git clone https://github.com/apple/swift-cmark.git cmark
   - cd cmark & git checkout -qf master
   # instead of git clone swift
-  - c:/msys64/usr/bin/mkdir $WORK_DIR/swift
+  - c:/msys64/usr/bin/mkdir %WORK_DIR%/swift
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
   - pacman -S --noconfirm mingw-w64-x86_64-clang       
@@ -38,7 +38,7 @@ build_script:
   - ninja
   - cd src
   - cp -p libcmark.dll.a libcmark.a
-  - cp -p libcmark.a  $WORK_DIR/swift/libcmark.a
+  - cp -p libcmark.a %WORK_DIR%/swift/libcmark.a
   # Build clang
   
 test_script:
