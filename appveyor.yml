@@ -13,8 +13,8 @@ install:
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - SET WORK_DIR=C:\projects
-  - git clone https://github.com/apple/swift-cmark.git cmark
-  - cd cmark & git checkout -qf master
+  - git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
+  - cd %WORK_DIR%/cmark & git checkout -qf master
   # instead of git clone swift
   - c:/msys64/usr/bin/mkdir %WORK_DIR%/swift
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
@@ -34,7 +34,7 @@ build_script:
   # Build cmark
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/cmark
   - cd %WORK_DIR%/build/NinjaMinGW/cmark
-  - cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ../../../cmark
+  - cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ %WORK_DIR%/cmark
   - ninja
   - cd src
   - cp -p libcmark.dll.a libcmark.a
