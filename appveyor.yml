@@ -18,13 +18,13 @@ install:
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
   - pacman -S --noconfirm mingw-w64-x86_64-clang       
-  - pacman -S --noconfirm mingw-w64-x86_64-icu         
-  - pacman -S --noconfirm mingw-w64-x86_64-libxml2     
-  - pacman -S --noconfirm mingw-w64-x86_64-wineditline 
+  #- pacman -S --noconfirm mingw-w64-x86_64-icu         
+  #- pacman -S --noconfirm mingw-w64-x86_64-libxml2     
+  #- pacman -S --noconfirm mingw-w64-x86_64-wineditline 
   - pacman -S --noconfirm mingw-w64-x86_64-winpthreads 
   - pacman -S --noconfirm mingw-w64-x86_64-pkg-config  
   - pacman -S --noconfirm mingw-w64-x86_64-dlfcn       
-  - pacman -S --noconfirm make                         
+  #- pacman -S --noconfirm make                         
   - pacman -S --noconfirm python                       
   - pacman -S --noconfirm python2                      
   
