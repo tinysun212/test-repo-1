@@ -36,10 +36,10 @@ install:
   #- git clone https://github.com/tinysun212/swift-clang-cygwin.git %WORK_DIR%/clang
   #- cd %WORK_DIR%/clang & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
   - cd %WORK_DIR%
-  - curl -o llvm_src.tar.gz https://github.com/tinysun212/swift-llvm-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
+  - wget -o llvm_src.tar.gz https://github.com/tinysun212/swift-llvm-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
   - tar zxvf llvm_src.tar.gz
   - mv swift-llvm-cygwin-swift-4.0.3-mingw.20180102 llvm
-  - curl -o clang_src.tar.gz https://github.com/tinysun212/swift-clang-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
+  - wget -o clang_src.tar.gz https://github.com/tinysun212/swift-clang-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
   - tar zxvf clang_src.tar.gz
   - mv swift-clang-cygwin-swift-4.0.3-mingw.20180102 clang
   
