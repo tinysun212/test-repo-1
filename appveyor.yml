@@ -88,7 +88,7 @@ deploy:
   - provider: AzureBlob
     storage_account_name: tinysun
     storage_access_key:
-      secure: %STORAGE_ACCESS_KEY%
+      secure: 9JTJYw/IeaJi710pRKnhJ/euWCqN2ExBB0bQ2T71WcAXEmJ+oz0dqmpruEHiNtZEZ3DO1K1bX8ZBnfBItbQGYw==
     container: swift
     folder: llvm
     artifact: LLVM A
