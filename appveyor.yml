@@ -29,25 +29,32 @@ install:
   - pacman -S --noconfirm python2                      
   
   # Download source
-  - git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
-  - cd %WORK_DIR%/cmark & git checkout -qf master & cd ..
-  - git clone https://github.com/tinysun212/swift-llvm-cygwin.git %WORK_DIR%/llvm
-  - cd %WORK_DIR%/llvm & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
-  - git clone https://github.com/tinysun212/swift-clang-cygwin.git %WORK_DIR%/clang
-  - cd %WORK_DIR%/clang & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+  #- git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
+  #- cd %WORK_DIR%/cmark & git checkout -qf master & cd ..
+  #- git clone https://github.com/tinysun212/swift-llvm-cygwin.git %WORK_DIR%/llvm
+  #- cd %WORK_DIR%/llvm & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+  #- git clone https://github.com/tinysun212/swift-clang-cygwin.git %WORK_DIR%/clang
+  #- cd %WORK_DIR%/clang & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+  - cd %WORK_DIR%
+  - curl -o llvm_src.tar.gz https://github.com/tinysun212/swift-llvm-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
+  - tar zxvf llvm_src.tar.gz
+  - mv swift-llvm-cygwin-swift-4.0.3-mingw.20180102 llvm
+  - curl -o clang_src.tar.gz https://github.com/tinysun212/swift-clang-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
+  - tar zxvf clang_src.tar.gz
+  - mv swift-clang-cygwin-swift-4.0.3-mingw.20180102 clang
   
   # instead of git clone swift
-  - c:/msys64/usr/bin/mkdir %WORK_DIR%/swift
+  #- c:/msys64/usr/bin/mkdir %WORK_DIR%/swift
   
 build_script:
   # Build cmark
-  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/cmark
-  - cd %WORK_DIR%/build/NinjaMinGW/cmark
-  - cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ %WORK_DIR%/cmark
-  - ninja
-  - cd src
-  - cp -p libcmark.dll.a libcmark.a
-  - cp -p libcmark.a %WORK_DIR%/swift/libcmark.a
+  #- c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/cmark
+  #- cd %WORK_DIR%/build/NinjaMinGW/cmark
+  #- cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ %WORK_DIR%/cmark
+  #- ninja
+  #- cd src
+  #- cp -p libcmark.dll.a libcmark.a
+  #- cp -p libcmark.a %WORK_DIR%/swift/libcmark.a
   
   # Build clang
   - cd %WORK_DIR%/llvm/tools
