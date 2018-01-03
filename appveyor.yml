@@ -81,7 +81,7 @@ after_build:
   - 7z a llvm_a.zip build/NinjaMinGW/llvm/lib/*.a
 
 artifacts:
-  - path: llvm_a.zip
+  - path: %WORK_DIR%/llvm_a.zip
     name: LLVM A
     
 deploy:
