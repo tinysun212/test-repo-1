@@ -33,7 +33,7 @@ install:
   # Patch GCC header
   # __float128 is undefined in clang (https://github.com/Alexpux/MINGW-packages/pull/1833)
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/type_traits
-  - grep 128 %MINGW64_DIR%/include/c++/*/type_traits
+  - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
   
   # Download source
   - git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
