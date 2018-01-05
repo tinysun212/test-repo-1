@@ -11,6 +11,7 @@ install:
   - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
+  - SET MINGW64_DIR=c:/msys64/mingw64
   - SET WORK_DIR=c:/projects/llvm-builder
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%
   - cd %WORK_DIR%
@@ -76,7 +77,7 @@ build_script:
   # Build swift
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/swift
   - cd %WORK_DIR%/build/NinjaMinGW/swift
-  - cmake -G "Ninja" ../../../swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_ASM_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang.exe -DCMAKE_C_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang.exe  -DCMAKE_CXX_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang++.exe -DPKG_CONFIG_EXECUTABLE=/mingw64/bin/pkg-config -DICU_UC_INCLUDE_DIR=/mingw64/include -DICU_UC_LIBRARY=/mingw64/lib/libicuuc.dll.a -DICU_I18N_INCLUDE_DIR=/mingw64/include -DICU_I18N_LIBRARY=/mingw64/lib/libicuin.dll.a -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORK_DIR%/build/NinjaMinGW/cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORK_DIR%/cmark -DSWIFT_PATH_TO_LLVM_SOURCE=%WORK_DIR%/llvm -DSWIFT_PATH_TO_LLVM_BUILD=%WORK_DIR%/build/NinjaMinGW/llvm -DSWIFT_STDLIB_ASSERTIONS:BOOL=TRUE %WORK_DIR%/swift
+  - cmake -G "Ninja" ../../../swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_ASM_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang.exe -DCMAKE_C_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang.exe  -DCMAKE_CXX_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang++.exe -DPKG_CONFIG_EXECUTABLE=%MINGW64_DIR%/bin/pkg-config -DICU_UC_INCLUDE_DIR=%MINGW64_DIR%include -DICU_UC_LIBRARY=%MINGW64_DIR%/lib/libicuuc.dll.a -DICU_I18N_INCLUDE_DIR=%MINGW64_DIR%/include -DICU_I18N_LIBRARY=%MINGW64_DIR%/lib/libicuin.dll.a -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORK_DIR%/build/NinjaMinGW/cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORK_DIR%/cmark -DSWIFT_PATH_TO_LLVM_SOURCE=%WORK_DIR%/llvm -DSWIFT_PATH_TO_LLVM_BUILD=%WORK_DIR%/build/NinjaMinGW/llvm -DSWIFT_STDLIB_ASSERTIONS:BOOL=TRUE %WORK_DIR%/swift
   - ninja
   
 after_build:
