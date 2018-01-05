@@ -51,6 +51,22 @@ build_script:
   - tar zxf llvm_src.tar.gz
   - mv swift-llvm-cygwin-swift-4.0.3-mingw.20180102 llvm
 
+  # clang source (error at cmake/modules/SwiftSharedCMakeConfig.cmake:146)
+  - wget -q -O clang_src.tar.gz https://github.com/tinysun212/swift-clang-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/bin/i386-unknown-linux-gnu-ld.gold
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/bin/x86_64-unknown-linux-gnu-ld.gold
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/i386-unknown-linux-gnu/bin/ld.gold
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/x86_64-unknown-linux-gnu/bin/ld.gold
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_32bit_linux_tree/usr/bin/i386-unknown-linux-gnu-as
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_32bit_linux_tree/usr/bin/i386-unknown-linux-gnu-ld
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_64bit_linux_tree/usr/bin/x86_64-unknown-linux-gnu-as
+  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_64bit_linux_tree/usr/bin/x86_64-unknown-linux-gnu-ld
+  - tar zxf clang_src.tar.gz
+  - mv swift-clang-cygwin-swift-4.0.3-mingw.20180102 clang
+  # link clang into llvm
+  - cd %WORK_DIR%/llvm/tools
+  - mklink /d clang ..\..\clang
+
   # Load llvm/clang lib
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/llvm
   - cd %WORK_DIR%/build/NinjaMinGW/llvm
