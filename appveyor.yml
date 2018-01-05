@@ -46,13 +46,13 @@ build_script:
   - cp -p libcmark.a %WORK_DIR%/swift/libcmark.a
 
   # llvm source
-  - cd %WORK_DIR%
-  - wget -q -O llvm_src.tar.gz https://github.com/tinysun212/swift-llvm-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
-  - tar zxf llvm_src.tar.gz
-  - mv swift-llvm-cygwin-swift-4.0.3-mingw.20180102 llvm
+  #- cd %WORK_DIR%
+  #- wget -q -O llvm_src.tar.gz https://github.com/tinysun212/swift-llvm-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
+  #- tar zxf llvm_src.tar.gz
+  #- mv swift-llvm-cygwin-swift-4.0.3-mingw.20180102 llvm
 
   # Load llvm/clang lib
-  - cd %WORK_DIR%
+  - cd %WORK_DIR%/build/NinjaMinGW/llvm
   - wget -q -O llvm_lib.tar.gz https://ci.appveyor.com/api/projects/tinysun212/llvm-builder/artifacts/llvm_lib.tar.gz
   - tar zxf llvm_lib.tar.gz
   
