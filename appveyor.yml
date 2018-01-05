@@ -30,6 +30,11 @@ install:
   - pacman -S --noconfirm python                       
   - pacman -S --noconfirm python2                      
   
+  # Patch GCC header
+  # __float128 is undefined in clang (https://github.com/Alexpux/MINGW-packages/pull/1833)
+  - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/type_traits
+  - grep 128 %MINGW64_DIR%/include/c++/*/type_traits
+  
   # Download source
   - git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
   - cd %WORK_DIR%/cmark & git checkout -qf master & cd ..
