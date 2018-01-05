@@ -47,8 +47,8 @@ build_script:
   
   # Load llvm/clang lib
   - cd %WORK_DIR%
-  - wget -q -O llvm_lib.zip https://ci.appveyor.com/api/projects/tinysun212/llvm-builder-two/artifacts/llvm_lib.zip
-  - 7z x llvm_lib.zip
+  - wget -q -O llvm_lib.tar.gz https://ci.appveyor.com/api/projects/tinysun212/llvm-builder/artifacts/llvm_lib.tar.gz
+  - tar zxf llvm_lib.tar.gz
   
   # Build swift
   - cd %WORK_DIR%/build/NinjaMinGW/swift
