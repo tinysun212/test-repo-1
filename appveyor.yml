@@ -12,7 +12,7 @@ install:
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - SET WORK_DIR=c:/projects/llvm-builder
-  - mkdir %WORK_DIR%
+  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%
   - cd %WORK_DIR%
   
   # Install packages
