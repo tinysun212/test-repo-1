@@ -11,16 +11,17 @@ install:
   - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
-  - SET WORK_DIR=%APPVEYOR_BUILD_FOLDER%
+  - SET WORK_DIR=c:\projects\llvm-builder
+  - mkdir %WORK_DIR%
   - cd %WORK_DIR%
   
   # Install packages
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
   - pacman -S --noconfirm mingw-w64-x86_64-clang       
-  #- pacman -S --noconfirm mingw-w64-x86_64-icu         
-  #- pacman -S --noconfirm mingw-w64-x86_64-libxml2     
-  #- pacman -S --noconfirm mingw-w64-x86_64-wineditline 
+  - pacman -S --noconfirm mingw-w64-x86_64-icu         
+  - pacman -S --noconfirm mingw-w64-x86_64-libxml2     
+  - pacman -S --noconfirm mingw-w64-x86_64-wineditline 
   - pacman -S --noconfirm mingw-w64-x86_64-winpthreads 
   - pacman -S --noconfirm mingw-w64-x86_64-pkg-config  
   - pacman -S --noconfirm mingw-w64-x86_64-dlfcn       
@@ -29,57 +30,39 @@ install:
   - pacman -S --noconfirm python2                      
   
   # Download source
-  #- git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
-  #- cd %WORK_DIR%/cmark & git checkout -qf master & cd ..
-  #- git clone https://github.com/tinysun212/swift-llvm-cygwin.git %WORK_DIR%/llvm
-  #- cd %WORK_DIR%/llvm & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
-  #- git clone https://github.com/tinysun212/swift-clang-cygwin.git %WORK_DIR%/clang
-  #- cd %WORK_DIR%/clang & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
-  - cd %WORK_DIR%
-  # llvm source
-  - wget -q -O llvm_src.tar.gz https://github.com/tinysun212/swift-llvm-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
-  - tar zxf llvm_src.tar.gz
-  - mv swift-llvm-cygwin-swift-4.0.3-mingw.20180102 llvm
-  # clang source
-  - wget -q -O clang_src.tar.gz https://github.com/tinysun212/swift-clang-cygwin/archive/swift-4.0.3+mingw.20180102.tar.gz
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/bin/i386-unknown-linux-gnu-ld.gold
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/bin/x86_64-unknown-linux-gnu-ld.gold
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/i386-unknown-linux-gnu/bin/ld.gold
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/basic_cross_linux_tree/usr/x86_64-unknown-linux-gnu/bin/ld.gold
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_32bit_linux_tree/usr/bin/i386-unknown-linux-gnu-as
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_32bit_linux_tree/usr/bin/i386-unknown-linux-gnu-ld
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_64bit_linux_tree/usr/bin/x86_64-unknown-linux-gnu-as
-  - tar zxf clang_src.tar.gz swift-clang-cygwin-swift-4.0.3-mingw.20180102/test/Driver/Inputs/multilib_64bit_linux_tree/usr/bin/x86_64-unknown-linux-gnu-ld
-  - tar zxf clang_src.tar.gz
-  - mv swift-clang-cygwin-swift-4.0.3-mingw.20180102 clang
-  # link clang into llvm
-  - cd %WORK_DIR%/llvm/tools
-  - mklink /d clang ..\..\clang
-  
-  # instead of git clone swift
-  #- c:/msys64/usr/bin/mkdir %WORK_DIR%/swift
-  
+  - git clone https://github.com/apple/swift-cmark.git %WORK_DIR%/cmark
+  - cd %WORK_DIR%/cmark & git checkout -qf master & cd ..
+  - git clone https://github.com/tinysun212/swift-windows.git %WORK_DIR%/swift
+  - cd %WORK_DIR%/swift & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+    
 build_script:
   # Build cmark
-  #- c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/cmark
-  #- cd %WORK_DIR%/build/NinjaMinGW/cmark
-  #- cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ %WORK_DIR%/cmark
-  #- ninja
-  #- cd src
-  #- cp -p libcmark.dll.a libcmark.a
-  #- cp -p libcmark.a %WORK_DIR%/swift/libcmark.a
+  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/cmark
+  - cd %WORK_DIR%/build/NinjaMinGW/cmark
+  - cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ %WORK_DIR%/cmark
+  - ninja
+  - cd src
+  - cp -p libcmark.dll.a libcmark.a
+  - cp -p libcmark.a %WORK_DIR%/swift/libcmark.a
   
-  # Build clang
-  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/llvm
-  - cd %WORK_DIR%/build/NinjaMinGW/llvm
-  - cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_COMPILER=clang  -DCMAKE_CXX_COMPILER=clang++ -DLLVM_ENABLE_ASSERTIONS:BOOL=TRUE %WORK_DIR%/llvm
-  - ninja lib/libclangAnalysis.a lib/libclangAPINotes.a lib/libclangARCMigrate.a lib/libclangAST.a lib/libclangASTMatchers.a lib/libclangBasic.a lib/libclangCodeGen.a lib/libclangDriver.a lib/libclangEdit.a lib/libclangFormat.a lib/libclangFrontend.a lib/libclangFrontendTool.a lib/libclangIndex.a lib/libclangLex.a lib/libclangParse.a lib/libclangRewrite.a lib/libclangRewriteFrontend.a lib/libclangSema.a lib/libclangSerialization.a lib/libclangStaticAnalyzerCheckers.a lib/libclangStaticAnalyzerCore.a lib/libclangStaticAnalyzerFrontend.a lib/libclangToolingCore.a lib/libLLVMAArch64AsmParser.a lib/libLLVMAArch64AsmPrinter.a lib/libLLVMAArch64CodeGen.a lib/libLLVMAArch64Desc.a lib/libLLVMAArch64Disassembler.a lib/libLLVMAArch64Info.a lib/libLLVMAArch64Utils.a lib/libLLVMAMDGPUAsmParser.a lib/libLLVMAMDGPUAsmPrinter.a lib/libLLVMAMDGPUCodeGen.a lib/libLLVMAMDGPUDesc.a lib/libLLVMAMDGPUDisassembler.a lib/libLLVMAMDGPUInfo.a lib/libLLVMAMDGPUUtils.a lib/libLLVMAnalysis.a lib/libLLVMARMAsmParser.a lib/libLLVMARMAsmPrinter.a lib/libLLVMARMCodeGen.a lib/libLLVMARMDesc.a lib/libLLVMARMDisassembler.a lib/libLLVMARMInfo.a lib/libLLVMAsmParser.a lib/libLLVMAsmPrinter.a lib/libLLVMBitReader.a lib/libLLVMBitWriter.a lib/libLLVMBPFAsmPrinter.a lib/libLLVMBPFCodeGen.a lib/libLLVMBPFDesc.a lib/libLLVMBPFDisassembler.a lib/libLLVMBPFInfo.a lib/libLLVMCodeGen.a lib/libLLVMCore.a lib/libLLVMCoroutines.a lib/libLLVMCoverage.a lib/libLLVMDebugInfoCodeView.a lib/libLLVMDebugInfoDWARF.a lib/libLLVMDebugInfoMSF.a lib/libLLVMDemangle.a lib/libLLVMExecutionEngine.a lib/libLLVMGlobalISel.a lib/libLLVMHexagonAsmParser.a lib/libLLVMHexagonCodeGen.a lib/libLLVMHexagonDesc.a lib/libLLVMHexagonDisassembler.a lib/libLLVMHexagonInfo.a lib/libLLVMInstCombine.a lib/libLLVMInstrumentation.a lib/libLLVMipo.a lib/libLLVMIRReader.a lib/libLLVMLanaiAsmParser.a
-  #- ninja lib/libLLVMLanaiCodeGen.a lib/libLLVMLanaiDesc.a lib/libLLVMLanaiDisassembler.a lib/libLLVMLanaiInfo.a lib/libLLVMLanaiInstPrinter.a lib/libLLVMLinker.a lib/libLLVMLTO.a lib/libLLVMMC.a lib/libLLVMMCDisassembler.a lib/libLLVMMCJIT.a lib/libLLVMMCParser.a lib/libLLVMMipsAsmParser.a lib/libLLVMMipsAsmPrinter.a lib/libLLVMMipsCodeGen.a lib/libLLVMMipsDesc.a lib/libLLVMMipsDisassembler.a lib/libLLVMMipsInfo.a lib/libLLVMMSP430AsmPrinter.a lib/libLLVMMSP430CodeGen.a lib/libLLVMMSP430Desc.a lib/libLLVMMSP430Info.a lib/libLLVMNVPTXAsmPrinter.a lib/libLLVMNVPTXCodeGen.a lib/libLLVMNVPTXDesc.a lib/libLLVMNVPTXInfo.a lib/libLLVMObjCARCOpts.a lib/libLLVMObject.a lib/libLLVMOption.a lib/libLLVMPasses.a lib/libLLVMPowerPCAsmParser.a lib/libLLVMPowerPCAsmPrinter.a lib/libLLVMPowerPCCodeGen.a lib/libLLVMPowerPCDesc.a lib/libLLVMPowerPCDisassembler.a lib/libLLVMPowerPCInfo.a lib/libLLVMProfileData.a lib/libLLVMRISCVCodeGen.a lib/libLLVMRISCVDesc.a lib/libLLVMRISCVInfo.a lib/libLLVMRuntimeDyld.a lib/libLLVMScalarOpts.a lib/libLLVMSelectionDAG.a lib/libLLVMSparcAsmParser.a lib/libLLVMSparcAsmPrinter.a lib/libLLVMSparcCodeGen.a lib/libLLVMSparcDesc.a lib/libLLVMSparcDisassembler.a lib/libLLVMSparcInfo.a lib/libLLVMSupport.a lib/libLLVMSystemZAsmParser.a lib/libLLVMSystemZAsmPrinter.a lib/libLLVMSystemZCodeGen.a lib/libLLVMSystemZDesc.a lib/libLLVMSystemZDisassembler.a lib/libLLVMSystemZInfo.a lib/libLLVMTarget.a lib/libLLVMTransformUtils.a lib/libLLVMVectorize.a lib/libLLVMX86AsmParser.a lib/libLLVMX86AsmPrinter.a lib/libLLVMX86CodeGen.a lib/libLLVMX86Desc.a lib/libLLVMX86Disassembler.a lib/libLLVMX86Info.a lib/libLLVMX86Utils.a lib/libLLVMXCoreAsmPrinter.a lib/libLLVMXCoreCodeGen.a lib/libLLVMXCoreDesc.a lib/libLLVMXCoreDisassembler.a lib/libLLVMXCoreInfo.a
+  # Load llvm/clang lib
+  - cd %WORK_DIR%
+  - wget -q -O ninja_cache.tar.gz https://ci.appveyor.com/api/projects/tinysun212/llvm-builder-two/artifacts/llvm_lib.zip
+  - 7z x llvm_lib.zip
+  
+  # Build swift
+  - cd %WORK_DIR%/build/NinjaMinGW/swift
+  - cmake -G "Ninja" ../../../swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_ASM_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang -DCMAKE_C_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang  -DCMAKE_CXX_COMPILER=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang++ -DPKG_CONFIG_EXECUTABLE=/mingw64/bin/pkg-config -DICU_UC_INCLUDE_DIR=/mingw64/include -DICU_UC_LIBRARY=/mingw64/lib/libicuuc.dll.a -DICU_I18N_INCLUDE_DIR=/mingw64/include -DICU_I18N_LIBRARY=/mingw64/lib/libicuin.dll.a -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORK_DIR%/build/NinjaMinGW/cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORK_DIR%/cmark -DSWIFT_PATH_TO_LLVM_SOURCE=%WORK_DIR%/llvm -DSWIFT_PATH_TO_LLVM_BUILD=%WORK_DIR%/build/NinjaMinGW/llvm -DSWIFT_STDLIB_ASSERTIONS:BOOL=TRUE %WORK_DIR%/swift
+  - ninja
   
 after_build:
-  - cd %WORK_DIR%
-  - 7z a llvm_a.zip build/NinjaMinGW/llvm/lib/*.a
+  - cd %WORK_DIR%/build/NinjaMinGW
+  - 7z a swift.zip swift/bin swift/lib/swift
+  - mv swift.zip %APPVEYOR_BUILD_FOLDER%
 
+test_script:
+  - 'echo skip test'
+  
 artifacts:
-  - path: llvm_a.zip
-    name: LLVM A
+  - path: swift.zip
+    name: SWIFT
